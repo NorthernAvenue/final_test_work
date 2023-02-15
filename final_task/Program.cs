@@ -1,4 +1,4 @@
-﻿int GetArraySize() // Размер массива. Используется проверка на ввод корректного значения от пользователя
+﻿int GetOriginalArraySize()
 {
     int size = 0;
     while (true)
@@ -14,7 +14,7 @@
     return size;
 }
 
-void FillArray(string [] array)  // Заполнение пользователем массива
+void FillOriginalArray(string[] array)
 {
     for (int i = 0; i < array.Length; i++)
     {
@@ -23,33 +23,53 @@ void FillArray(string [] array)  // Заполнение пользовател�
     }
 }
 
-void PrintArray(string[] array) // Печать  массива
+void PrintArray(string[] array)
 {
-    Console.Write(string.Join(",", array));
+    string result = "[ ";
+    for (int i = 0; i < array.Length; i++)
+    {
+        result += $"{array[i]} ";
+    }
+    result += "]";
+    Console.Write(result);
 }
 
-void CheckSizeValue(string[] array) // Проверка значений на кол-во символов и печать по условию задачи
+string[] ModifiedArray(string[] array)
 {
-    string[] newArray = array.Where(str => str.Length <= 3).ToArray();
+    int lengthLimit = 3;
+
+    int numbersItems = 0;
+
+    for (int i = 0; i < array.Length; i++)
+    {
+        if (array[i].Length <= lengthLimit)
+        {
+            numbersItems++;
+        }
+    }
+
+    string[] modifiedArray = new string[numbersItems];
+
+    int j = 0;
+    for (int i = 0; i < array.Length; i++)
+    {
+        if (array[i].Length <= lengthLimit)
+        {
+            modifiedArray[j] = array[i];
+            j++;
+        }
+    }
+    return modifiedArray;
+
 }
 
-int size = GetArraySize(); // получаем размер
+int size = GetOriginalArraySize(); // запрос исходного размера массива
+string[] originalArray = new string[size]; // инициализация массива
+FillOriginalArray(originalArray); // заполнение массива пользователем
+PrintArray(originalArray); // печать массива на консоль
+System.Console.WriteLine();// разделитель для удобства чтения
+PrintArray(ModifiedArray(originalArray)); // основная функция по условию задачи на проверку длины элементов массива и формирования нового удовлетворяющих условию
 
-string[] array = new string[size]; //ициализируем массив размера size
-
-FillArray(array); // заполнение массива пользователем
-
-Console.Write("Оригинальный массив: ");
-
-PrintArray(array); // вывод массива на печать
-
-System.Console.WriteLine();
-
-Console.Write("Модифицированный массив: ");
-
-CheckSizeValue(array); // проверка длины значений массива
-
-PrintArray(array); // вывод массива на печать 
 
 
 
